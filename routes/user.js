@@ -1,10 +1,11 @@
 const router = require('express').Router()
 const User = require('../models/user')
 const bcrypt = require('bcryptjs')
+const passport = require('passport')
 
 
 //Получение списка пользователей
-router.get('/', async (req, res) => {
+router.get('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         const users = await User.findAll()
         res.status(200).json({users})
@@ -28,7 +29,7 @@ router.get('/:id', async (req, res) => {
     }
 })
 //Добавление пользователя
-router.post('/', async (req, res) => {
+router.post('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         const hashPassword = await bcrypt.hash(req.body.password, 10)
         const user = await User.create({
