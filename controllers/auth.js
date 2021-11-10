@@ -14,13 +14,13 @@ class authController {
     async login(req, res) {
         try {
             const {email, password} = req.body
-            const user = await User.findOne({email})
+            const user = await User.findOne({where: {email}})
             if(!user) {
-                return res.json({message: 'Email error', code: 2})
+                return res.status(400).json({message: 'Email error', code: 2})
             }
-            const validPassword = bcrypt.compareSync(password, user.password)
+            const validPassword = bcrypt.compareSync(password, user.dataValues.password)
             if(!validPassword) {
-                return res.json({message: 'Password error', code: 2 })
+                return res.status(400).json({message: 'Password error', code: 2})
             }
             const token = generateAccessToken(user.id, user.email);
             return res.json({token})
