@@ -17,7 +17,7 @@ router.get('/', passport.authenticate('jwt', {session: false}), async (req, res)
     }
 })
 //Получение данных пользователя
-router.get('/:id', async (req, res) => {
+router.get('/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         const user = await User.findByPk(+req.params.id)
         res.status(200).json({user})
@@ -29,7 +29,7 @@ router.get('/:id', async (req, res) => {
     }
 })
 //Добавление пользователя
-router.post('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
+router.post('/', passport.authenticate('jwt', {session: false}), passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         const hashPassword = await bcrypt.hash(req.body.password, 10)
         const user = await User.create({
@@ -47,7 +47,7 @@ router.post('/', passport.authenticate('jwt', {session: false}), async (req, res
     }
 })
 //Изменение филиала
-router.put('/:id', async (req, res) => {
+router.put('/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         let user = await User.findByPk(+req.params.id)
         for(const bodyKey in req.body){
@@ -67,7 +67,7 @@ router.put('/:id', async (req, res) => {
     }
 })
 //Удаление филиала
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         const user = await User.findByPk(+req.params.id)
         await user.destroy()

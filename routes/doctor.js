@@ -1,8 +1,9 @@
 const router = require('express').Router()
 const Doctor = require('../models/doctor')
+const passport = require('passport')
 
 //Получение списка врачей
-router.get('/', async (req, res) => {
+router.get('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         const doctors = await Doctor.findAll()
         res.status(200).json({doctors})
@@ -14,7 +15,7 @@ router.get('/', async (req, res) => {
     }
 })
 //Получение данных врача
-router.get('/:id', async (req, res) => {
+router.get('/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         const doctor = await Doctor.findByPk(+req.params.id)
         res.status(200).json({doctor})
@@ -26,7 +27,7 @@ router.get('/:id', async (req, res) => {
     }
 })
 //Добавление врача
-router.post('/', async (req, res) => {
+router.post('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         const doctor = await Doctor.create({
             firstName: req.body.firstName,
@@ -45,7 +46,7 @@ router.post('/', async (req, res) => {
     }
 })
 //Изменение врача
-router.put('/:id', async (req, res) => {
+router.put('/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         let doctor = await Doctor.findByPk(+req.params.id)
         for(const bodyKey in req.body){
@@ -61,7 +62,7 @@ router.put('/:id', async (req, res) => {
     }
 })
 //Удаление врача
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         const doctor = await Doctor.findByPk(+req.params.id)
         await doctor.destroy()

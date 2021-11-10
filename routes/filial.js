@@ -1,9 +1,10 @@
 const router = require('express').Router()
 const Filial = require('../models/filial')
+const passport = require('passport')
 
 
 //Получение списка филиалов
-router.get('/', async (req, res) => {
+router.get('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         const filials = await Filial.findAll()
         res.status(200).json({filials})
@@ -15,7 +16,7 @@ router.get('/', async (req, res) => {
     }
 })
 //Получение данных филиала
-router.get('/:id', async (req, res) => {
+router.get('/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         const filial = await Filial.findByPk(+req.params.id)
         res.status(200).json({filial})
@@ -27,7 +28,7 @@ router.get('/:id', async (req, res) => {
     }
 })
 //Добавление филиала
-router.post('/', async (req, res) => {
+router.post('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         const filial = await Filial.create({
             description: req.body.description,
@@ -43,7 +44,7 @@ router.post('/', async (req, res) => {
     }
 })
 //Изменение филиала
-router.put('/:id', async (req, res) => {
+router.put('/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         let filial = await Filial.findByPk(+req.params.id)
         for(const bodyKey in req.body){
@@ -59,7 +60,7 @@ router.put('/:id', async (req, res) => {
     }
 })
 //Удаление филиала
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         const filial = await Filial.findByPk(+req.params.id)
         await filial.destroy()

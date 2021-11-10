@@ -1,9 +1,10 @@
 const router = require('express').Router()
 const Pacient = require('../models/pacient')
+const passport = require('passport')
 
 
 //Получение списка пациентов
-router.get('/', async (req, res) => {
+router.get('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         const pacients = await Pacient.findAll()
         res.status(200).json({pacients})
@@ -15,7 +16,7 @@ router.get('/', async (req, res) => {
     }
 })
 //Получение данных пациента
-router.get('/:id', async (req, res) => {
+router.get('/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         const pacient = await Pacient.findByPk(+req.params.id)
         res.status(200).json({pacient})
@@ -27,7 +28,7 @@ router.get('/:id', async (req, res) => {
     }
 })
 //Добавление пациента
-router.post('/', async (req, res) => {
+router.post('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         const pacient = await Pacient.create({
             firstName: req.body.firstName,
@@ -51,7 +52,7 @@ router.post('/', async (req, res) => {
     }
 })
 //Изменение пациента
-router.put('/:id', async (req, res) => {
+router.put('/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         let pacient = await Pacient.findByPk(+req.params.id)
         for(const bodyKey in req.body){
@@ -67,7 +68,7 @@ router.put('/:id', async (req, res) => {
     }
 })
 //Удаление пациента
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
     try{
         const pacient = await Pacient.findByPk(+req.params.id)
         await pacient.destroy()
