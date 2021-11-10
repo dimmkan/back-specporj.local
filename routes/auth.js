@@ -2,7 +2,7 @@ const router = require('express').Router();
 const controller = require('../controllers/auth');
 
 router.post('/login', (req, res) => {
-    return controller.login(req, res)
+    controller.login(req, res)
 });
 
 router.post('/registration', (req, res) => {
