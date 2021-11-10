@@ -29,6 +29,27 @@ class authController {
             res.status(400).json({message: 'Login error'})
         }
     }
+
+    async registration(req, res) {
+        try {
+            const {email, password} = req.body;
+            const candidate = await User.findOne({where: {email}})
+            if (candidate) {
+                return res.json({message: 'User is already registered'})
+            }
+            const hashPassword = await bcrypt.hash(password, 10)
+            const user = await User.create({
+                email: req.body.email,
+                password: hashPassword,
+                role: req.body.role ?? 'user',
+                filialID: null
+            })
+            res.status(201).json({user})
+        } catch (e) {
+            console.log(e)
+            res.status(400).json({message: 'Registration error'})
+        }
+    }
 }
 
 module.exports = new authController()

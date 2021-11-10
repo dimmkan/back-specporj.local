@@ -5,4 +5,8 @@ router.post('/login', (req, res) => {
     return controller.login(req, res)
 });
 
+router.post('/registration', (req, res) => {
+    controller.registration(req, res)
+})
+
 module.exports = router

@@ -21,7 +21,7 @@ const user = sequelize.define('User', {
             allowNull: false
         },
         filialID: {
-            allowNull: false,
+            allowNull: true,
             type: Sequelize.INTEGER
         },
     },
