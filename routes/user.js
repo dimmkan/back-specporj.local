@@ -36,7 +36,7 @@ router.post('/', passport.authenticate('jwt', {session: false}), passport.authen
             email: req.body.email,
             password: hashPassword,
             role: req.body.role ?? 'user',
-            filialID: +req.body.filialID
+            filialID: isNaN(+req.body.filialID) ? null : +req.body.filialID
         })
         res.status(201).json({user})
     }catch (e) {

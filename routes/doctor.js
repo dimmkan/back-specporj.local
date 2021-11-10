@@ -34,7 +34,7 @@ router.post('/', passport.authenticate('jwt', {session: false}), async (req, res
             middleName: req.body.middleName,
             lastName: req.body.lastName,
             specification: req.body.specification,
-            filialID: req.body.filialID,
+            filialID: isNaN(+req.body.filialID) ? null : +req.body.filialID,
             imageURI: req.body.imageURI,
         })
         res.status(201).json({doctor})
