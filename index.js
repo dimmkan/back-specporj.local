@@ -12,8 +12,9 @@ const passport = require('passport')
 const app = express()
 const  LISTEN_PORT = process.env.PORT || 3000
 
-app.use(express.json())
 app.use(cors())
+app.options('*', cors)
+app.use(express.json())
 app.use(passport.initialize())
 require('./middleware/authJwtMiddleware')(passport)
 
