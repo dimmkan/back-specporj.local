@@ -30,11 +30,12 @@ class userController {
     async createUser(req, res) {
         try {
             const hashPassword = await bcrypt.hash(req.body.password, 10)
+            console.log('filialID: '+req.body.filialID)
             const user = await User.create({
                 email: req.body.email,
                 password: hashPassword,
                 role: req.body.role ?? 'user',
-                filialID: isNaN(+req.body.filialID) ? null : +req.body.filialID
+                filialID: !req.body.filialID || isNaN(+req.body.filialID) ? null : +req.body.filialID
             })
             res.status(201).json({user})
         } catch (e) {
