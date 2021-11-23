@@ -30,7 +30,6 @@ class userController {
     async createUser(req, res) {
         try {
             const hashPassword = await bcrypt.hash(req.body.password, 10)
-            console.log('filialID: '+req.body.filialID)
             const user = await User.create({
                 email: req.body.email,
                 password: hashPassword,
