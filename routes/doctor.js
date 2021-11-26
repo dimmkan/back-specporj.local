@@ -27,4 +27,9 @@ router.delete('/:id', passport.authenticate('jwt', {session: false}), async (req
     await doctorController.deleteDoctor(req, res)
 })
 
+//Загрузка изображения
+router.post('/:id/uploadImage', passport.authenticate('jwt', {session: false}), async (req, res) => {
+    await doctorController.uploadImage(req, res)
+})
+
 module.exports = router

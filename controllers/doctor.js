@@ -74,6 +74,19 @@ class doctorController {
         }
     }
 
+    async uploadImage(req, res) {
+        try{
+            const doctor = await Doctor.findByPk(+req.params.id)
+            doctor.imageURI = 'http://localhost:8000/' + req.file.path.replace('\\', '\/')
+            doctor.save()
+            res.status(200).json({message: 'Image uploaded', filepath: doctor.imageURI})
+        }catch (e) {
+            console.log(e)
+            res.status(500).json({
+                message: 'Internal server error'
+            })
+        }
+    }
 }
 
 module.exports = new doctorController()
